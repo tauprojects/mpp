@@ -1,7 +1,7 @@
 ##  Evaluating Concurrent Java Data Structures 
 #### Advanced Topics in Multicore Architecture and Software Systems
 
-###### Almog Zaltzman, Matan Gizunterman
+###### Almog Zeltsman, Matan Gizunterman
 _____
 ## Description
 Java mavan project with JMH framework
