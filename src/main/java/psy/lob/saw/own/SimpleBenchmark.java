@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.TearDown;
 
 public class SimpleBenchmark {
 
-    @State(Scope.Thread)
+    @State(Scope.Group)
     public static class MyState {
 
         @Setup(Level.Trial)
