@@ -47,7 +47,7 @@ public class RunBenchmarks {
 		Options opt = new OptionsBuilder().include(className + ".*").mode(Mode.Throughput).timeUnit(TimeUnit.SECONDS)
 				.warmupIterations(0).measurementTime(TimeValue.seconds(5)).measurementIterations(1).threads(threads)
 				.forks(1).shouldFailOnError(true).shouldDoGC(enableGC).param("updateRateArg", upd)
-				.param("initSize", initSize).build();
+				.param("initSize", initSize).output("jmhOutput").build();
 
 		Runner runner = new Runner(opt);
 
