@@ -1,0 +1,94 @@
+# JMH 1.8 (released 851 days ago, please consider updating!)
+# VM invoker: C:\Program Files\Java\jdk1.7.0_80\jre\bin\java.exe
+# VM options: -Dfile.encoding=Cp1252
+# Warmup: <none>
+# Measurement: 1 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 2 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: psy.lob.saw.own.MapBenchmark.run
+# Parameters: (initSize = 16535, updateRateArg = 0)
+
+# Run progress: 0.00% complete, ETA 00:00:30
+# Fork: 1 of 1
+Iteration   1: 10653774.447 ops/s
+
+
+Result "run":
+  10653774.447 ops/s
+
+
+# JMH 1.8 (released 851 days ago, please consider updating!)
+# VM invoker: C:\Program Files\Java\jdk1.7.0_80\jre\bin\java.exe
+# VM options: -Dfile.encoding=Cp1252
+# Warmup: <none>
+# Measurement: 1 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 2 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: psy.lob.saw.own.MapBenchmark.run
+# Parameters: (initSize = 16535, updateRateArg = 50)
+
+# Run progress: 16.67% complete, ETA 00:00:34
+# Fork: 1 of 1
+Iteration   1: 7587889.993 ops/s
+
+
+Result "run":
+  7587889.993 ops/s
+
+
+# JMH 1.8 (released 851 days ago, please consider updating!)
+# VM invoker: C:\Program Files\Java\jdk1.7.0_80\jre\bin\java.exe
+# VM options: -Dfile.encoding=Cp1252
+# Warmup: <none>
+# Measurement: 1 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 2 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: psy.lob.saw.own.MapBenchmark.run
+# Parameters: (initSize = 32768, updateRateArg = 0)
+
+# Run progress: 33.33% complete, ETA 00:00:26
+# Fork: 1 of 1
+Iteration   1: 11309354.157 ops/s
+
+
+Result "run":
+  11309354.157 ops/s
+
+
+# JMH 1.8 (released 851 days ago, please consider updating!)
+# VM invoker: C:\Program Files\Java\jdk1.7.0_80\jre\bin\java.exe
+# VM options: -Dfile.encoding=Cp1252
+# Warmup: <none>
+# Measurement: 1 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 2 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: psy.lob.saw.own.MapBenchmark.run
+# Parameters: (initSize = 32768, updateRateArg = 50)
+
+# Run progress: 50.00% complete, ETA 00:00:20
+# Fork: 1 of 1
+Iteration   1: 10380952.105 ops/s
+
+
+Result "run":
+  10380952.105 ops/s
+
+
+# JMH 1.8 (released 851 days ago, please consider updating!)
+# VM invoker: C:\Program Files\Java\jdk1.7.0_80\jre\bin\java.exe
+# VM options: -Dfile.encoding=Cp1252
+# Warmup: <none>
+# Measurement: 1 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 2 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: psy.lob.saw.own.MapBenchmark.run
+# Parameters: (initSize = 65536, updateRateArg = 0)
+
+# Run progress: 66.67% complete, ETA 00:00:13
+# Fork: 1 of 1
+Iteration   1: 

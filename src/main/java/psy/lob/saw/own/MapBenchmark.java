@@ -12,6 +12,9 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
 import contention.abstractions.CompositionalMap;
+import psy.lob.saw.synchrobench.trees.lockbased.LockBasedFriendlyTreeMap;
+import psy.lob.saw.synchrobench.trees.lockbased.LockBasedStanfordTreeMap;
+import psy.lob.saw.synchrobench.trees.lockbased.LogicalOrderingAVL;
 import psy.lob.saw.synchrobench.trees.lockfree.NonBlockingTorontoBSTMap;
 
 public class MapBenchmark {
@@ -19,13 +22,20 @@ public class MapBenchmark {
 	@State(Scope.Benchmark)
 	public static class GroupContext {
 
+		@Param({ "trees.lockfree.NonBlockingTorontoBSTMap",
+            	 "trees.lockbased.LockBasedFriendlyTreeMap",
+            	 "trees.lockbased.LogicalOrderingAVL",
+            	 "trees.lockbased.LockBasedStanfordTreeMap"})
+		public static String className;
+		
+		@Param({ "16535", "32768", "65536" })
+		public static int initSize = 16535;
+		
 		@Param({ "0", "50" })
 		public int updateRateArg;
 
 		public int updateRate = updateRateArg * 10;
 
-		@Param({ "16535", "32768", "65536" })
-		public static int initSize = 16535;
 
 		private static int valueRange = initSize * 2;
 
@@ -33,8 +43,24 @@ public class MapBenchmark {
 		private Random groupRand;
 
 		@Setup(Level.Trial)
-		public void doSetup() {
-			map = new NonBlockingTorontoBSTMap<Integer, Integer>();
+		public void doSetup() throws IllegalArgumentException
+		{
+			
+			if(className.equals("trees.lockfree.NonBlockingTorontoBSTMap"))
+			{
+				map = new NonBlockingTorontoBSTMap<Integer, Integer>();
+			} else if(className.equals("trees.lockbased.LockBasedFriendlyTreeMap")){
+				map = new LockBasedFriendlyTreeMap<Integer,Integer>();
+			} else if(className.equals("trees.lockbased.LogicalOrderingAVL")){
+				map = new LogicalOrderingAVL<Integer,Integer>();
+			} else if(className.equals("trees.lockbased.LockBasedStanfordTreeMap")){
+				map = new LockBasedStanfordTreeMap<Integer,Integer>();
+			} else{
+				throw new IllegalArgumentException(
+						String.format(
+								"Unknown classname [%s] in MapBenchmark run [i=%d,u=%d]",
+								className,initSize,updateRateArg));
+			}	
 
 			groupRand = new Random();
 
