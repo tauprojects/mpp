@@ -24,11 +24,11 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import sun.misc.Unsafe;
 import contention.abstractions.CompositionalMap;
+import hashtables.lockfree.cliffutils.AbstractEntry;
 import hashtables.lockfree.cliffutils.Counter;
 import hashtables.lockfree.cliffutils.UtilUnsafe;
-import hashtables.lockfree.cliffutils.AbstractEntry;
+import sun.misc.Unsafe;
 
 /**
  * A lock-free alternate implementation of

@@ -1,0 +1,2 @@
+id,Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throughput0,Throughput1,Throughput2,Throughput3,Throughput4
+0,hashTables,0,16384,hashmaps.lockfree.NonBlockingFriendlyHashMap,1,7112934.931848,7143184.794430,6907567.146660,6877661.642944,6752946.048702

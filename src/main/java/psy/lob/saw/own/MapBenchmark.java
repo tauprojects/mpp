@@ -1,5 +1,6 @@
 package psy.lob.saw.own;
 
+import java.lang.reflect.Constructor;
 import java.util.Random;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -12,10 +13,6 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
 import contention.abstractions.CompositionalMap;
-import psy.lob.saw.synchrobench.trees.lockbased.LockBasedFriendlyTreeMap;
-import psy.lob.saw.synchrobench.trees.lockbased.LockBasedStanfordTreeMap;
-import psy.lob.saw.synchrobench.trees.lockbased.LogicalOrderingAVL;
-import psy.lob.saw.synchrobench.trees.lockfree.NonBlockingTorontoBSTMap;
 
 public class MapBenchmark {
 
@@ -25,7 +22,17 @@ public class MapBenchmark {
 		@Param({ "trees.lockfree.NonBlockingTorontoBSTMap",
             	 "trees.lockbased.LockBasedFriendlyTreeMap",
             	 "trees.lockbased.LogicalOrderingAVL",
-            	 "trees.lockbased.LockBasedStanfordTreeMap"})
+            	 "trees.lockbased.LockBasedStanfordTreeMap",
+            	 
+            	 "hashmaps.lockfree.NonBlockingFriendlyHashMap",
+                 "hashmaps.lockfree.NonBlockingCliffHashMap",
+                 //"hashmaps.lockfree.JavaHashIntSet",
+                 "hashmaps.lockbased.LockBasedJavaHashMap",
+                 "hashmaps.transactional.TransactionalBasicHashSet",
+                 
+                 "skiplists.lockfree.NonBlockingFriendlySkipListMap",
+                 "skiplists.lockfree.NonBlockingJavaSkipListMap"})
+		
 		public static String className;
 		
 		@Param({ "16535", "32768", "65536" })
@@ -37,17 +44,25 @@ public class MapBenchmark {
 		public int updateRate = updateRateArg * 10;
 
 
-		private static int valueRange = initSize * 2;
+		private int valueRange = initSize * 2;
 
 		public CompositionalMap<Integer, Integer> map;
 		private Random groupRand;
 
+		@SuppressWarnings("unchecked")
 		@Setup(Level.Trial)
-		public void doSetup() throws IllegalArgumentException
+		public void doSetup() throws Exception
 		{
 			
-			if(className.equals("trees.lockfree.NonBlockingTorontoBSTMap"))
-			{
+			Class<CompositionalMap<Integer, Integer>> benchClass = 
+					(Class<CompositionalMap<Integer, Integer>>) Class
+					.forName("psy.lob.saw.synchrobench." + className);
+			Constructor<CompositionalMap<Integer, Integer>> c = benchClass
+					.getConstructor();
+			map = (CompositionalMap<Integer, Integer>) c.newInstance();
+			
+			/*
+			if(className.equals("trees.lockfree.NonBlockingTorontoBSTMap")){
 				map = new NonBlockingTorontoBSTMap<Integer, Integer>();
 			} else if(className.equals("trees.lockbased.LockBasedFriendlyTreeMap")){
 				map = new LockBasedFriendlyTreeMap<Integer,Integer>();
@@ -55,13 +70,18 @@ public class MapBenchmark {
 				map = new LogicalOrderingAVL<Integer,Integer>();
 			} else if(className.equals("trees.lockbased.LockBasedStanfordTreeMap")){
 				map = new LockBasedStanfordTreeMap<Integer,Integer>();
+			} else if(className.equals("hashmaps.lockfree.NonBlockingFriendlyHashMap")){
+				map = NonBlockingFriendlyHashMap<Integer,Integer>();
+			} else if(className.equals("hashmaps.lockfree.NonBlockingCliffHashMap")){
+			} else if(className.equals("hashmaps.lockbased.LockBasedJavaHashMap")){
+			} else if(className.equals("hashmaps.transactional.TransactionalBasicHashSet")){
 			} else{
 				throw new IllegalArgumentException(
 						String.format(
 								"Unknown classname [%s] in MapBenchmark run [i=%d,u=%d]",
 								className,initSize,updateRateArg));
 			}	
-
+			 */
 			groupRand = new Random();
 
 			// fill

@@ -24,21 +24,24 @@ public class RunBenchmarks {
 
 	private final static String[]
 
-	binaryTrees = { "trees.lockfree.NonBlockingTorontoBSTMap", "trees.lockbased.LockBasedFriendlyTreeMap",
-			"trees.lockbased.LogicalOrderingAVL", "trees.lockbased.LockBasedStanfordTreeMap" },
+	binaryTrees = { "trees.lockfree.NonBlockingTorontoBSTMap", 
+					"trees.lockbased.LockBasedFriendlyTreeMap",
+					"trees.lockbased.LogicalOrderingAVL", 
+					"trees.lockbased.LockBasedStanfordTreeMap" },
 
-			hashTables = { "hashtables.lockfree.NonBlockingFriendlyHashMap",
-					"hashtables.lockfree.NonBlockingCliffHashMap",
-					// "hashtables.lockfree.JavaHashIntSet",
-					"hashtables.lockbased.LockBasedJavaHashMap", "hashtables.transactional.TransactionalBasicHashSet" },
+			hashTables = { "hashmaps.lockfree.NonBlockingFriendlyHashMap",
+							"hashmaps.lockfree.NonBlockingCliffHashMap",
+							// "hashmaps.lockfree.JavaHashIntSet",
+							"hashmaps.lockbased.LockBasedJavaHashMap", 
+							"hashtables.transactional.TransactionalBasicHashSet" },
 
-			linkedLists = { "linkedlists.lockfree.NonBlockingLinkedListSetRTTI",
-					"linkedlists.lockbased.LockCouplingListIntSet", "linkedlists.lockbased.LazyLinkedListSortedSet",
-					"linkedlists.transactional.ElasticLinkedListIntSet",
-					"linkedlists.transactional.ReusableLinkedListIntSet" },
+			linkedLists = { "linkedlists.lockbased.LockCouplingListIntSet", 
+							"linkedlists.lockbased.LazyLinkedListSortedSet",
+							"linkedlists.transactional.ElasticLinkedListIntSet",
+							"linkedlists.transactional.ReusableLinkedListIntSet" },
 
 			skipLists = { "skiplists.lockfree.NonBlockingFriendlySkipListMap",
-					"skiplists.lockfree.NonBlockingJavaSkipListMap" };
+						  "skiplists.lockfree.NonBlockingJavaSkipListMap" };
 
 	private final static String[][] structs = { 
 			binaryTrees, 
@@ -59,11 +62,11 @@ public class RunBenchmarks {
 
 	private final static String[] upd = { "0", "50" };
 
-	public double launchBenchmark(String className, String upd, String initSize, int threads, boolean enableGC)
+	public double launchBenchmark(String benchfile,String className, String upd, String initSize, int threads, boolean enableGC)
 			throws Exception {
 
 		Options opt = new OptionsBuilder()
-				.include("MapBenchmark.*")
+				.include(benchfile+".*")
 				.mode(Mode.Throughput)
 				.timeUnit(TimeUnit.SECONDS)
 				.warmupIterations(0)
@@ -109,20 +112,22 @@ public class RunBenchmarks {
 		 sb.append(titles[titles.length-1]).append('\n');
 		 pw.write(sb.toString());	        
 	}
-
 	
 	public static void main(String[] args) throws Exception {
 		
+		int id = 0;
+		String benchFile = null;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH-mm");
 		String date = simpleDateFormat.format(new Date());
-		OutputStream out = new FileOutputStream(new File(String.format("Results/RunResults %s.csv", date)));
+		OutputStream out = new FileOutputStream(new File(String.format("Tests/JMH/RunResults %s.csv", date)));
 		PrintWriter pw = new PrintWriter(out,true);
 		
 		printTitlesCsv(pw);
 		
-		int id = 0;
-		for (int structInd=0;structInd<1;structInd++) //TODO: change from 1
+		for (int structInd=0;structInd<4;structInd++) //TODO: change from 1
 		{
+			benchFile = structInd == 2 ? "SetBenchmark" : "MapBenchmark";
+			
 			for (String u : upd)
 			{
 				for (String i : initSize)
@@ -139,7 +144,8 @@ public class RunBenchmarks {
 								System.out.format("Running:     %s,%s,%s,%d [run no #%d]\n",
 													b,u,i,t,runtime);
 								System.out.println("******************************************\n\n");
-								res[runtime] = new RunBenchmarks().launchBenchmark(b,u,i,t,true); 
+								res[runtime] = new RunBenchmarks().launchBenchmark(
+										benchFile,b,u,i,t,true); 
 							}
 							
 							pw.write(String.format("%s,%s,%s,%s,%s,%d,%f,%f,%f,%f,%f\n", 
@@ -153,8 +159,6 @@ public class RunBenchmarks {
 				}
 			}
 		}
-
 		pw.close();
 	}
-
 }
