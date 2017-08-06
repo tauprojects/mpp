@@ -1,13 +1,12 @@
 package psy.lob.saw.own;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +61,12 @@ public class RunBenchmarks {
 
 	private final static String[] upd = { "0", "50" };
 
-	public double launchBenchmark(String benchfile,String className, String upd, String initSize, int threads, boolean enableGC)
+	
+	/***************************************************************************/
+	
+	//function to launch JMH with args
+	public double launchBenchmark(String benchfile,String className, 
+			String upd, String initSize, int threads, boolean enableGC)
 			throws Exception {
 
 		Options opt = new OptionsBuilder()
@@ -84,75 +88,183 @@ public class RunBenchmarks {
 
 		Runner runner = new Runner(opt);
 
-		// disable prints temporarily
-		PrintStream originalStream = System.out;
-		System.setOut(new PrintStream(new OutputStream() {
-			public void write(int b) {
-			}
-		}));
-
 		Collection<RunResult> run = runner.run();
 
-		// return prints
-		System.setOut(originalStream);
-
+		//logic to get result from benchmark
 		RunResult[] resArray = run.toArray(new RunResult[run.size()]);
 		Collection<BenchmarkResult> benchres = resArray[0].getBenchmarkResults();
 		BenchmarkResult[] benchResArray = benchres.toArray(new BenchmarkResult[benchres.size()]);
 		return benchResArray[0].getPrimaryResult().getScore();
 	}
 
-	public static void printTitlesCsv(PrintWriter pw){
+	//function to print the titles to the csv
+	public static void printTitlesCsv(PrintWriter pw,int i){
 		String[] titles = {"id","Structure Type","Update Ratio","Initial Size","Class Name", 
-				"Threads","Throughput0","Throughput1","Throughput2","Throughput3","Throughput4"};
+				"Threads"};
 		 StringBuilder sb = new StringBuilder();
-		 for (int ind=0;ind<titles.length-1;ind++){
+		 for (int ind=0;ind<titles.length;ind++){
 			 sb.append(titles[ind]).append(',');
 		 }
-		 sb.append(titles[titles.length-1]).append('\n');
+		 for (int ind=0;ind<i-1;ind++){
+			 sb.append("Throuhput").append(ind).append(',');
+		 }
+		 sb.append("Throuhput").append(i-1).append('\n');
 		 pw.write(sb.toString());	        
 	}
 	
+	//function to print the titles to the csv
+	public static void printRowCsv(PrintWriter pw,int id, String structName,
+			 String u,String i,String b,int t,double[] res){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(String.format("%d,%s,%s,%s,%s,%d,",id,structName,u,i,b,t));
+		 for (int ind=0;ind<res.length-1;ind++){
+			 sb.append(res[ind]).append(',');
+		 }
+		 sb.append(res[res.length-1]).append('\n');
+		 pw.write(sb.toString());	 
+		 pw.flush();
+	}	
+	
+	
 	public static void main(String[] args) throws Exception {
 		
+		int argNumber = 0;
+		int forceThreads = 0;
+		String forceUpd = null,forceInitSize = null, forceClass = null, forceStruct = null;
 		int id = 0;
 		String benchFile = null;
+		int iterations = 5;
+		
+		
+		//parse arguments. wrong arguments will be ignored
+		while (argNumber < args.length) {
+			String currentArg = args[argNumber++];
+			String optionValue = args[argNumber++];
+			if (currentArg.equals("-t"))
+				forceThreads = Integer.parseInt(optionValue);
+			else if (currentArg.equals("-u"))
+				forceUpd = optionValue;
+			else if (currentArg.equals("-i"))
+				forceInitSize = optionValue;
+			else if (currentArg.equals("-b"))
+				forceClass = optionValue;
+			else if (currentArg.equals("-s"))
+				forceStruct = optionValue;
+			else if (currentArg.equals("-r"))
+				iterations = Integer.parseInt(optionValue);
+			}
+		
+		//if all args available run the specified configuration.
+		//if there is any kind of error the benchmark will capture it
+		if(forceThreads != 0 && forceUpd!=null && 
+				forceInitSize != null && forceClass != null)
+		{
+
+			System.out.println("\n\n******************************************");
+			System.out.format("Running:     %s,%s,%s,%d",
+					forceClass,forceUpd,forceInitSize,forceThreads);
+			System.out.println("******************************************\n\n");
+
+			
+			if (Arrays.asList(linkedLists).contains(forceClass))
+				benchFile = "SetBenchmark";
+			else
+				benchFile = "MapBenchmark";
+			new RunBenchmarks().launchBenchmark(
+					benchFile,forceClass,forceUpd,forceInitSize,forceThreads,true); 
+			return;
+
+			//if not all args available and one of them is not supported abort
+		} else {
+			boolean error = false;
+			if(forceThreads != 0 && forceThreads != 1 && forceThreads != 2 
+					&& forceThreads != 4 && forceThreads != 8  
+					&& forceThreads != 16 && forceThreads != 32){
+				System.err.format("Unsupported thread count %d\n",forceThreads);
+				error = true;
+			 } if(forceUpd!=null && !Arrays.asList(upd).contains(forceUpd)){
+				System.err.format("Unsupported update ratio %s\n",forceUpd);
+			 	error = true;
+			 } if(forceInitSize != null && !Arrays.asList(initSize).contains(forceInitSize)){
+				System.err.format("Unsupported init size %s\n",forceInitSize);
+				error = true;
+			 } if(forceClass != null && !Arrays.asList(binaryTrees).contains(forceClass)
+					&& !Arrays.asList(hashTables).contains(forceClass)
+					&& !Arrays.asList(linkedLists).contains(forceClass)
+					&& !Arrays.asList(skipLists).contains(forceClass)){
+				System.err.format("Unsupported class: %s\n",forceClass);
+				error = true;
+			 } if(forceStruct != null && !Arrays.asList(structsNames).contains(forceStruct)){
+				System.err.format("Unsupported struct type %s\n",forceStruct);
+				error = true;
+			 } if(iterations <= 0){
+					System.err.format("Unsupported iterations count %d\n",iterations);
+					error = true;
+				 }
+			 if (error)
+				 return;
+		}
+		
+		
+		//create CSV file with this day and time
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH-mm");
-		String date = simpleDateFormat.format(new Date());
-		OutputStream out = new FileOutputStream(new File(String.format("Tests/JMH/RunResults %s.csv", date)));
+		Calendar cal = Calendar.getInstance();
+		String date = simpleDateFormat.format(cal.getTime());
+		OutputStream out = new FileOutputStream(
+				new File(String.format("Tests/JMH/RunResults %s.csv", date)));
 		PrintWriter pw = new PrintWriter(out,true);
 		
-		printTitlesCsv(pw);
+		printTitlesCsv(pw,iterations);
 		
-		for (int structInd=0;structInd<4;structInd++) //TODO: change from 1
+		
+		
+		/** MAIN LOOP **/
+		MainLoop:
+		for (int structInd=0;structInd<4;structInd++)
 		{
 			benchFile = structInd == 2 ? "SetBenchmark" : "MapBenchmark";
+
+			if(forceStruct !=null && !structsNames[structInd].equals(forceStruct))
+				continue MainLoop;
 			
+			UpdLoop:
 			for (String u : upd)
 			{
+				if(forceUpd !=null && !u.equals(forceUpd))
+					continue UpdLoop;
+				
+				InitSizeLoop:
 				for (String i : initSize)
 				{
+					if(forceInitSize !=null && !i.equals(forceInitSize))
+						continue InitSizeLoop;
+					
+					ClassLoop:
 					for (String b : structs[structInd])
 					{
+						if(forceClass !=null && !b.equals(forceClass))
+							continue ClassLoop;
+						
+						ThreadLoop:
 						for (int t : threads)
-						{
-							double[] res = new double[5];
+						{	
+							if(forceThreads != 0 && t != forceThreads)
+								continue ThreadLoop;							
 							
-							for (int runtime=0; runtime<5;runtime++)
+							double[] res = new double[iterations];
+							
+							for (int runtime=0; runtime<iterations;runtime++)
 							{
 								System.out.println("\n\n******************************************");
 								System.out.format("Running:     %s,%s,%s,%d [run no #%d]\n",
 													b,u,i,t,runtime);
 								System.out.println("******************************************\n\n");
 								res[runtime] = new RunBenchmarks().launchBenchmark(
-										benchFile,b,u,i,t,true); 
+										benchFile,b,u,i,t,true);
 							}
-							
-							pw.write(String.format("%s,%s,%s,%s,%s,%d,%f,%f,%f,%f,%f\n", 
-									 String.valueOf(id),
-									 structsNames[structInd],
-									 u,i,b,t,res[0],res[1],res[2],res[3],res[4]));
-							pw.flush();
+							printRowCsv(pw,id,structsNames[structInd],
+									u,i,b,t,res);
+
 							id++;
 						}
 					}
@@ -160,5 +272,7 @@ public class RunBenchmarks {
 			}
 		}
 		pw.close();
+		System.out.format("\n\nFINISHED SUCCESSFULLY at: %s\n\n",
+				simpleDateFormat.format(cal.getTime()));
 	}
 }

@@ -90,13 +90,19 @@ public class SetBenchmark {
 		Integer newInt = t.rand.nextInt(g.valueRange);
 		boolean a;
 		int coin = t.rand.nextInt(1000);
-
-		if (coin < g.updateRate) { // add
-			if (a = g.set.addInt((int) newInt)) {
-				a = false;
+		
+		if (coin < g.updateRate) {
+			if (coin < g.updateRate /2) { // add
+				if (a = g.set.addInt((int) newInt)) {
+					a = false;
+				}
+			} else { // remove
+				if (a = g.set.removeInt((int) newInt)) {
+					a = false;
+				}
 			}
-		} else { // remove
-			if (a = g.set.removeInt((int) newInt)) {
+		} else {
+			if (a = g.set.containsInt((int) newInt)) {
 				a = false;
 			}
 		}

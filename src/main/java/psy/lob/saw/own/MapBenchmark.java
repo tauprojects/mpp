@@ -133,12 +133,18 @@ public class MapBenchmark {
 		Integer a, b;
 		int coin = t.rand.nextInt(1000);
 
-		if (coin < g.updateRate) { // add
-			if ((a = g.map.putIfAbsent((int) newInt, (int) newInt)) == null) {
-				a = 0;
+		if (coin < g.updateRate){
+			if (coin < g.updateRate / 2) { // add
+				if ((a = g.map.putIfAbsent((int) newInt, (int) newInt)) == null) {
+					a = 0;
+				}
+			} else { // remove
+				if ((a = g.map.remove((int) newInt)) != null) {
+					a = 0;
+				}
 			}
-		} else { // remove
-			if ((a = g.map.remove((int) newInt)) != null) {
+		} else {
+			if ((a = g.map.get((int) newInt)) == null) {
 				a = 0;
 			}
 		}
