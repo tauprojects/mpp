@@ -161,7 +161,7 @@ public class RunBenchmarks {
 		{
 
 			System.out.println("\n\n******************************************");
-			System.out.format("Running:     %s,%s,%s,%d",
+			System.out.format("Running SPECIFIC configuration:     %s,%s,%s,%d\n",
 					forceClass,forceUpd,forceInitSize,forceThreads);
 			System.out.println("******************************************\n\n");
 
@@ -172,8 +172,7 @@ public class RunBenchmarks {
 				benchFile = "MapBenchmark";
 			new RunBenchmarks().launchBenchmark(
 					benchFile,forceClass,forceUpd,forceInitSize,forceThreads,true); 
-			return;
-
+			System.out.println("\n\nFINISHED SUCCESSFULLY");
 			//if not all args available and one of them is not supported abort
 		} else {
 			boolean error = false;
@@ -271,8 +270,5 @@ public class RunBenchmarks {
 				}
 			}
 		}
-		pw.close();
-		System.out.format("\n\nFINISHED SUCCESSFULLY at: %s\n\n",
-				simpleDateFormat.format(cal.getTime()));
 	}
 }
