@@ -53,7 +53,8 @@ The arguments and possible values are as followed (*constraints are given for ru
 	-u 		Update ratio. Percent of operations to be add/remove. Others will be contains.
 			from this percent, half will be add and half remove. [Possible values: 0,50]
 			General constraints: 0<=u<=100
-	-i 		Initial size. Structure will be first filled with this number of objects. [Possible values: 16384, 32768, 65536]
+	-i 		Initial size. Structure will be first filled with this number of objects. 
+			[Possible values: 16384, 32768, 65536]
 			General constraints: i>0
 	-b		Class to run benchmark on. Possible values for now (write without brackets)
 				trees.lockfree.NonBlockingTorontoBSTMap
