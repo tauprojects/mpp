@@ -75,8 +75,11 @@ The arguments and possible values are as followed (*constraints are given for ru
 				skiplists.lockfree.NonBlockingFriendlySkipListMap
 				skiplists.lockfree.NonBlockingJavaSkipListMap
 	
+Private non JMH/Synchrobench arguments:
+	
 	-s 		Type of structure to run. [Possible values: binaryTrees,hashTables,linkedLists,skipLists]
-
+	-r 		number of repetitions of each benchmark [default value: 5]
+	-index	index of benchmark from total to start from (mainly for debugging purposes)
 
 	
 Based on: https://github.com/nitsanw/jmh-samples

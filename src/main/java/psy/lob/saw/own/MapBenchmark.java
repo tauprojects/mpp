@@ -41,10 +41,8 @@ public class MapBenchmark {
 		@Param({ "0", "50" })
 		public int updateRateArg;
 
-		public int updateRate = updateRateArg * 10;
-
-
-		private int valueRange = initSize * 2;
+		private int updateRate;
+		private int valueRange;
 
 		public CompositionalMap<Integer, Integer> map;
 		private Random groupRand;
@@ -53,7 +51,11 @@ public class MapBenchmark {
 		@Setup(Level.Trial)
 		public void doSetup() throws Exception
 		{
+			//only here updateRate and valueRange are available
+			updateRate = updateRateArg * 10;
+			valueRange = initSize * 2;
 			
+			//create class from name dynamically
 			Class<CompositionalMap<Integer, Integer>> benchClass = 
 					(Class<CompositionalMap<Integer, Integer>>) Class
 					.forName("psy.lob.saw.synchrobench." + className);
@@ -61,45 +63,16 @@ public class MapBenchmark {
 					.getConstructor();
 			map = (CompositionalMap<Integer, Integer>) c.newInstance();
 			
-			/*
-			if(className.equals("trees.lockfree.NonBlockingTorontoBSTMap")){
-				map = new NonBlockingTorontoBSTMap<Integer, Integer>();
-			} else if(className.equals("trees.lockbased.LockBasedFriendlyTreeMap")){
-				map = new LockBasedFriendlyTreeMap<Integer,Integer>();
-			} else if(className.equals("trees.lockbased.LogicalOrderingAVL")){
-				map = new LogicalOrderingAVL<Integer,Integer>();
-			} else if(className.equals("trees.lockbased.LockBasedStanfordTreeMap")){
-				map = new LockBasedStanfordTreeMap<Integer,Integer>();
-			} else if(className.equals("hashmaps.lockfree.NonBlockingFriendlyHashMap")){
-				map = NonBlockingFriendlyHashMap<Integer,Integer>();
-			} else if(className.equals("hashmaps.lockfree.NonBlockingCliffHashMap")){
-			} else if(className.equals("hashmaps.lockbased.LockBasedJavaHashMap")){
-			} else if(className.equals("hashmaps.transactional.TransactionalBasicHashSet")){
-			} else{
-				throw new IllegalArgumentException(
-						String.format(
-								"Unknown classname [%s] in MapBenchmark run [i=%d,u=%d]",
-								className,initSize,updateRateArg));
-			}	
-			 */
 			groupRand = new Random();
 
 			// fill
 			for (int i = 0; i < initSize;) {
 
 				int newInt = groupRand.nextInt(valueRange);
-
 				if (map.putIfAbsent(newInt, newInt) == null)
 					i++; // only if successful
 			}
-
 		}
-
-		// @TearDown(Level.Trial)
-		// public void doTearDown() {
-		// System.out.println(total);
-		// }
-
 	} // end of group
 
 	@State(Scope.Thread)
@@ -118,11 +91,6 @@ public class MapBenchmark {
 			numRemove = 0;
 			numFailures = 0;
 		}
-
-		// @TearDown(Level.Iteration)
-		// public void doTearDown() {
-		//
-		// }
 	}
 
 	@SuppressWarnings("unused")
@@ -150,3 +118,4 @@ public class MapBenchmark {
 		}
 	}
 }
+

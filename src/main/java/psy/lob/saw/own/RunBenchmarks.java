@@ -134,7 +134,7 @@ public class RunBenchmarks {
 		int id = 0;
 		String benchFile = null;
 		int iterations = 5;
-		
+		int startfrom = 0;
 		
 		//parse arguments. wrong arguments will be ignored
 		while (argNumber < args.length) {
@@ -152,6 +152,8 @@ public class RunBenchmarks {
 				forceStruct = optionValue;
 			else if (currentArg.equals("-r"))
 				iterations = Integer.parseInt(optionValue);
+			else if (currentArg.equals("-index"))
+				startfrom = Integer.parseInt(optionValue);			
 			}
 		
 		//if all args available run the specified configuration.
@@ -160,10 +162,10 @@ public class RunBenchmarks {
 				forceInitSize != null && forceClass != null)
 		{
 
-			System.out.println("\n\n******************************************");
+			System.out.println("\n\n************************************************************************************");
 			System.out.format("Running SPECIFIC configuration:     %s,%s,%s,%d\n",
 					forceClass,forceUpd,forceInitSize,forceThreads);
-			System.out.println("******************************************\n\n");
+			System.out.println("************************************************************************************\n\n");
 
 			
 			if (Arrays.asList(linkedLists).contains(forceClass))
@@ -247,17 +249,22 @@ public class RunBenchmarks {
 						ThreadLoop:
 						for (int t : threads)
 						{	
-							if(forceThreads != 0 && t != forceThreads)
-								continue ThreadLoop;							
+							if(id < startfrom){
+								id++;
+								continue ThreadLoop;			
+							}
 							
+							if (forceThreads != 0 && t != forceThreads)
+								continue ThreadLoop;
+
 							double[] res = new double[iterations];
 							
 							for (int runtime=0; runtime<iterations;runtime++)
 							{
-								System.out.println("\n\n******************************************");
-								System.out.format("Running:     %s,%s,%s,%d [run no #%d]\n",
-													b,u,i,t,runtime);
-								System.out.println("******************************************\n\n");
+								System.out.println("\n\n************************************************************************************");
+								System.out.format("%d.(%d/%d) Running:     %s,%s,%s,%d [run no #%d]\n",
+										id,runtime+1,iterations,b,u,i,t,runtime);
+								System.out.println("************************************************************************************\n\n");
 								res[runtime] = new RunBenchmarks().launchBenchmark(
 										benchFile,b,u,i,t,true);
 							}

@@ -33,10 +33,8 @@ public class SetBenchmark {
 		@Param({ "0", "50" })
 		public int updateRateArg;
 
-		public int updateRate = updateRateArg * 10;
-
-
-		private int valueRange = initSize * 2;
+		private int updateRate;
+		private int valueRange;
 
 		public CompositionalIntSet set;
 		private Random groupRand;
@@ -51,6 +49,10 @@ public class SetBenchmark {
 			Constructor<CompositionalIntSet> c = benchClass
 					.getConstructor();
 			set = (CompositionalIntSet) c.newInstance();
+		
+			updateRate = updateRateArg * 10;
+			valueRange = initSize * 2;
+
 			
 			groupRand = new Random();
 
