@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Mode;
@@ -35,7 +34,7 @@ public class RunBenchmarks {
 							"hashmaps.transactional.TransactionalBasicHashSet" },
 
 			linkedLists = { "linkedlists.lockbased.LockCouplingListIntSet", 
-							"linkedlists.lockbased.LazyLinkedListSortedSet",
+							//"linkedlists.lockbased.LazyLinkedListSortedSet",
 							"linkedlists.transactional.ElasticLinkedListIntSet",
 							"linkedlists.transactional.ReusableLinkedListIntSet" },
 
