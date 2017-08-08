@@ -32,7 +32,7 @@ public class RunBenchmarks {
 							"hashmaps.lockfree.NonBlockingCliffHashMap",
 							// "hashmaps.lockfree.JavaHashIntSet",
 							"hashmaps.lockbased.LockBasedJavaHashMap", 
-							"hashtables.transactional.TransactionalBasicHashSet" },
+							"hashmaps.transactional.TransactionalBasicHashSet" },
 
 			linkedLists = { "linkedlists.lockbased.LockCouplingListIntSet", 
 							"linkedlists.lockbased.LazyLinkedListSortedSet",
