@@ -11,6 +11,7 @@ import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
 
 import contention.abstractions.CompositionalMap;
 
@@ -83,7 +84,6 @@ public class MapBenchmark {
 		public boolean res;
 		protected int numRemove;
 		public int numFailures;
-
 		@Setup(Level.Iteration)
 		public void doSetup() {
 			numAdd = 0;
@@ -96,7 +96,9 @@ public class MapBenchmark {
 	@SuppressWarnings("unused")
 	@Benchmark
 	@BenchmarkMode(Mode.Throughput)
-	public void run(GroupContext g, ThreadContext t) {
+	public void run(GroupContext g, ThreadContext t
+		//	,Blackhole bh
+			) {
 		Integer newInt = t.rand.nextInt(g.valueRange);
 		Integer a, b;
 		int coin = t.rand.nextInt(1000);
@@ -104,15 +106,18 @@ public class MapBenchmark {
 		if (coin < g.updateRate){
 			if (coin < g.updateRate / 2) { // add
 				if ((a = g.map.putIfAbsent((int) newInt, (int) newInt)) == null) {
+					//bh.consume(a);
 					a = 0;
 				}
 			} else { // remove
 				if ((a = g.map.remove((int) newInt)) != null) {
+					//bh.consume(a);
 					a = 0;
 				}
 			}
 		} else {
 			if ((a = g.map.get((int) newInt)) == null) {
+				//bh.consume(a);
 				a = 0;
 			}
 		}
