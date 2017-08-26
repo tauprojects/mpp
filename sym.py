@@ -3,8 +3,9 @@ import re
 import csv
 from time import strftime, time, localtime
 import os
-
-const = ['java', '-cp', 'bin', 'contention.benchmark.Test', '-f', '1', '-d', '5000', '-s', '0', '-a', '0', '-W', '0']
+#env
+const = ['LD_PRELOAD=libjemalloc.so', 'numactl', '--interleave=all']
+const += ['java', '-cp', 'bin', 'contention.benchmark.Test', '-f', '1', '-d', '5000', '-s', '0', '-a', '0', '-W', '5']
 match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?')
 
 def runSync(u,i,b,t):
@@ -27,7 +28,9 @@ def runSync(u,i,b,t):
 
 
 t_arg = [1,2,4,8,16,32]
-i_arg = [16384, 32768, 65536]
+i_arg = [#16384,
+         32768]#,
+         #65536]
 
 binaryTrees = ["trees.lockfree.NonBlockingTorontoBSTMap",
                "trees.lockbased.LockBasedFriendlyTreeMap",
@@ -40,9 +43,9 @@ hashTables = ["hashtables.lockfree.NonBlockingFriendlyHashMap",
               "hashtables.lockbased.LockBasedJavaHashMap",
               "hashtables.transactional.TransactionalBasicHashSet"]
 
-linkedLists = ["linkedlists.lockfree.NonBlockingLinkedListSetRTTI",
+linkedLists = [#"linkedlists.lockfree.NonBlockingLinkedListSetRTTI",
                "linkedlists.lockbased.LockCouplingListIntSet",
-               "linkedlists.lockbased.LazyLinkedListSortedSet",
+               #"linkedlists.lockbased.LazyLinkedListSortedSet",
                "linkedlists.transactional.ElasticLinkedListIntSet",
                "linkedlists.transactional.ReusableLinkedListIntSet"]
 
@@ -52,9 +55,10 @@ skipLists = ["skiplists.lockfree.NonBlockingFriendlySkipListMap",
 structTypes = [binaryTrees,hashTables,linkedLists,skipLists]
 structTypesNames = ["Binary Trees", "Hash Tables", "Linked Lists", "Skip Lists"]
 
-upd_arg = [0,50]
+upd_arg = [#0,
+           50]
 name = "RunResults " + strftime("%Y.%m.%d %H-%M", localtime(time())) + ".csv"
-path = "/home/matanalmog/mpp2/Tests/" + name
+path = "/specific/a/home/cc/students/cs/zeltsman/mpp/synchro/results/" + name
 index = 0
 f = open(path, 'w+', newline='')
 writer = csv.writer(f)
@@ -70,17 +74,16 @@ for structType in enumerate(structTypes):
         for i in i_arg:
             for b in structType[1]:
                 for t in t_arg:
-                    if index > 293:
-                        results = []
-                        print(str(index)+". results: ",end="")
-                        for rep in range(4):
-                            res = str(runSync(u,i,b,t))
-                            results.append(res)
-                            print(res,end=", ")
-                        print("")
-                        row = [index,structTypesNames[structType[0]],str(u)+"%",str(i),str(b),str(t)] + results
-                        #print(str(index)+"%\t",row)
-                        writer.writerow(row)
+                    results = []
+                    print(str(index)+". results: ",end="")
+                    for rep in range(5):
+                        res = str(runSync(u,i,b,t))
+                        results.append(res)
+                        print(res,end=", ")
+                    print("")
+                    row = [index,structTypesNames[structType[0]],str(u)+"%",str(i),str(b),str(t)] + results
+                    #print(str(index)+"%\t",row)
+                    writer.writerow(row)
                     index += 1
 f.close()
 print("\nFINISHED SUCCESSFULLY!")
