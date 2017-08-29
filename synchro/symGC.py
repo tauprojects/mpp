@@ -5,7 +5,7 @@ from time import strftime, time, localtime
 import os
 #env
 const = ['env', 'LD_PRELOAD=libjemalloc.so', 'numactl', '--interleave=all']
-const += ['java', '-cp', 'bin', 'contention.benchmark.Test', '-f', '1', '-d', '5000', '-s', '0', '-a', '0', '-W', '5','-gc' ,'true']
+const += ['java', '-cp', 'bin', 'contention.benchmark.Test', '-f', '1', '-d', '5000', '-s', '0', '-a', '0', '-W', '0','-gc' ,'true']
 match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?')
 
 def runSync(u,i,b,t):
