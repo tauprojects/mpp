@@ -67,7 +67,7 @@ index = 0
 f = open(path, 'w+', newline='')
 writer = csv.writer(f)
 writer.writerow(["ID","Structure Type","Update Ratio","Initial Size","Class Name", "Threads",\
-                 "Throughput1","Throughput2","Throughput3","Throughput4"])
+                 "Throughput1","Throughput2","Throughput3","Throughput4","Throughput5"])
 
 print("Synchrobench Simulator")
 print("Writing to file:",name)
