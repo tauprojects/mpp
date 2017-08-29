@@ -58,10 +58,7 @@ structTypesNames = ["Binary Trees", "Hash Tables", "Linked Lists", "Skip Lists"]
 upd_arg = [#0,
            50]
 name = "RunResults " + strftime("%Y.%m.%d %H-%M", localtime(time())) + ".csv"
-if os.name == 'nt':
-    path = "C:/mpp/data/mpp/synchro/WindowsResults/" + name
-else:
-    path = "/specific/a/home/cc/students/cs/zeltsman/mpp/synchro/results/" + name
+path = "/specific/a/home/cc/students/cs/gizunterman/mpp/synchro/results/" + name
 index = 0
 f = open(path, 'w+', newline='')
 writer = csv.writer(f)
@@ -83,7 +80,7 @@ for structType in enumerate(structTypes):
                         res = str(runSync(u,i,b,t))
                         results.append(res)
                         print(res,end=", ")
-                    print("")
+                        print("")
                     row = [index,structTypesNames[structType[0]],str(u)+"%",str(i),str(b),str(t)] + results
                     #print(str(index)+"%\t",row)
                     writer.writerow(row)
