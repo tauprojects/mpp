@@ -1,0 +1,4 @@
+ID,Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throughput1,Throughput2,Throughput3,Throughput4
+0,Binary Trees,50%,32768,trees.lockfree.NonBlockingTorontoBSTMap,1,2197767.8,2136598.8,2185807.8,2106808.4,2157327.2
+1,Binary Trees,50%,32768,trees.lockfree.NonBlockingTorontoBSTMap,2,3364499.8,3130859.6280743848,3297717.4,3326828.2,3290878.8
+2,Binary Trees,50%,32768,trees.lockfree.NonBlockingTorontoBSTMap,4,6539590.881823635,6644724.855028993,6710192.76144771,6725567.0,6294866.226754649

@@ -1,0 +1,3 @@
+ID,Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throughput1,Throughput2,Throughput3,Throughput4
+294,Linked Lists,0%,16384,linkedlists.lockbased.LockCouplingListIntSet,1,5680.791525084949,5277.033779732161,5532.280631621027,5128.522886268239
+295,Linked Lists,0%,16384,linkedlists.lockbased.LockCouplingListIntSet,2,2973.4265734265737,2610.755697720912,2664.2014791125325,3117.635310565209

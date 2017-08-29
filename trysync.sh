@@ -1,0 +1,1 @@
+java -cp bin contention.benchmark.Test -u 50 -f 1 -l 5000 -s 0 -a 0 -i 16384 -r 32768 -W 0 -b linkedlists.lockfree.NonBlockingLinkedListSet
