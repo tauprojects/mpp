@@ -4,7 +4,7 @@ import csv
 from time import strftime, time, localtime
 import os
 #env
-const = []#['env', 'LD_PRELOAD=libjemalloc.so', 'numactl', '--interleave=all']
+const = ['env', 'LD_PRELOAD=libjemalloc.so', 'numactl', '--interleave=all']
 const += ['java', '-cp', 'bin', 'contention.benchmark.Test', '-f', '1', '-d', '5000', '-s', '0', '-a', '0', '-W', '5','-gc']
 match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?')
 
@@ -41,7 +41,8 @@ hashTables = ["hashtables.lockfree.NonBlockingFriendlyHashMap",
               "hashtables.lockfree.NonBlockingCliffHashMap",
               #"hashtables.lockfree.JavaHashIntSet",
               "hashtables.lockbased.LockBasedJavaHashMap",
-              "hashtables.transactional.TransactionalBasicHashSet"]
+              #"hashtables.transactional.TransactionalBasicHashSet"
+              ]
 
 linkedLists = [#"linkedlists.lockfree.NonBlockingLinkedListSetRTTI",
                "linkedlists.lockbased.LockCouplingListIntSet",
