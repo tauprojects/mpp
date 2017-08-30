@@ -31,7 +31,8 @@ public class RunBenchmarks {
 							"hashmaps.lockfree.NonBlockingCliffHashMap",
 							// "hashmaps.lockfree.JavaHashIntSet",
 							"hashmaps.lockbased.LockBasedJavaHashMap", 
-							"hashmaps.transactional.TransactionalBasicHashSet" },
+							//"hashmaps.transactional.TransactionalBasicHashSet" 
+							},
 
 			linkedLists = { "linkedlists.lockbased.LockCouplingListIntSet", 
 							//"linkedlists.lockbased.LazyLinkedListSortedSet",
@@ -134,6 +135,7 @@ public class RunBenchmarks {
 		String benchFile = null;
 		int iterations = 5;
 		int startfrom = 0;
+		boolean enableGC = true;
 		
 		//parse arguments. wrong arguments will be ignored
 		while (argNumber < args.length) {
@@ -152,7 +154,9 @@ public class RunBenchmarks {
 			else if (currentArg.equals("-r"))
 				iterations = Integer.parseInt(optionValue);
 			else if (currentArg.equals("-index"))
-				startfrom = Integer.parseInt(optionValue);			
+				startfrom = Integer.parseInt(optionValue);
+			else if (currentArg.equals("-gc"))
+				enableGC = Boolean.parseBoolean(optionValue);
 			}
 		
 		//if all args available run the specified configuration.
@@ -265,7 +269,7 @@ public class RunBenchmarks {
 										id,runtime+1,iterations,b,u,i,t,runtime);
 								System.out.println("************************************************************************************\n\n");
 								res[runtime] = new RunBenchmarks().launchBenchmark(
-										benchFile,b,u,i,t,true);
+										benchFile,b,u,i,t,enableGC);
 							}
 							printRowCsv(pw,id,structsNames[structInd],
 									u,i,b,t,res);

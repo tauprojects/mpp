@@ -38,6 +38,8 @@ This command is suppose to iterate and run through all the available benchmark c
 as were run on the Synchrobench article.
 ###### 
     java -cp target/microbenchmarks.jar psy.lob.saw.own.RunBenchmarks
+	
+	Optionaly add before line: env LD_PRELOAD=libjemalloc.so numactl --interleave=all
 
 #### Our Benchmark main arguments:
 # 
@@ -74,6 +76,8 @@ The arguments and possible values are as followed (*constraints are given for ru
                 
 				skiplists.lockfree.NonBlockingFriendlySkipListMap
 				skiplists.lockfree.NonBlockingJavaSkipListMap
+	-gc		will force GC between iterations in JMH. 
+			[Possible values: true/false, default value: true]
 	
 Private non JMH/Synchrobench arguments:
 	
