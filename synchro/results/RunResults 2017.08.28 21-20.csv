@@ -1,2 +1,0 @@
-ID,Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throughput1,Throughput2,Throughput3,Throughput4
-41,Hash Tables,50%,32768,hashtables.lockbased.LockBasedJavaHashMap,32,51572381.854436696,49440349.25074925,49541926.458832934,47044015.977631316,49455571.628371626

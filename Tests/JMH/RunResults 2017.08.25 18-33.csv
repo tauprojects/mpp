@@ -1,5 +1,0 @@
-id,Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throuhput0,Throuhput1
-0,binaryTrees,0,16384,trees.lockfree.NonBlockingTorontoBSTMap,2,6295134.895813495,6235500.166351873
-1,binaryTrees,0,16384,trees.lockbased.LockBasedFriendlyTreeMap,2,5984948.97754295,6051897.759345131
-2,binaryTrees,0,16384,trees.lockbased.LogicalOrderingAVL,2,6580208.608947778,6447118.464386305
-3,binaryTrees,0,16384,trees.lockbased.LockBasedStanfordTreeMap,2,5991127.059673955,5887682.92337575

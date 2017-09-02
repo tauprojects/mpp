@@ -1,2 +1,0 @@
-Structure Type,Update Ratio,Initial Size,Class Name,Threads,Throughput
-Binary Trees,0%,16384,trees.lockfree.NonBlockingTorontoBSTMap,1,3334676.2647470506
