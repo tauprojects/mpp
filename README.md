@@ -8,7 +8,7 @@ Java mavan project with JMH framework
  
 ## Guidelines
 ##### Dependencies:
-* **Java 7** *(synchrobench doesn't support Java8)*
+* **Java 7** *(synchrobench doesn't fully support Java8)*
 * **git** 
 * **maven**
 #
@@ -19,19 +19,6 @@ Java mavan project with JMH framework
     mvn package
 
 
-##### Run Benchmark Sample:
-# 
-Run the java *microbenchmarks.jar* package according to JMH documentation 
-http://java-performance.info/jmh/
-http://psy-lob-saw.blogspot.co.il/2013/04/writing-java-micro-benchmarks-with-jmh.html
-###### 
-    java -jar target/microbenchmarks.jar -wi 10 -i 20 -f 1 -t 2 -tu s ".*SimpleBenchmark.*"
-
-##### Login to server:
-#
-    ssh [username]@nova.cs.tau.ac.il
-    ssh matanalmog@rack-mad-02.tau.ac.il
-    
 #### Running Our Benchmark Main:
 # 
 This command is suppose to iterate and run through all the available benchmark configurations
@@ -83,7 +70,7 @@ Private non JMH/Synchrobench arguments:
 	
 	-s 		Type of structure to run. [Possible values: binaryTrees,hashTables,linkedLists,skipLists]
 	-r 		number of repetitions of each benchmark [default value: 5]
-	-index	index of benchmark from total to start from (mainly for debugging purposes)
+	-index		index of benchmark from total to start from (mainly for debugging purposes)
 
 	
 Based on: https://github.com/nitsanw/jmh-samples
